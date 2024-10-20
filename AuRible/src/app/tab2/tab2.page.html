@@ -1,9 +1,59 @@
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      <!-- Bouton retour -->
+    </ion-buttons>
+    <ion-title>Page Lecture</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Image de couverture du livre -->
+  <div class="book-cover-container">
+    <img src="assets/soul.jpeg" alt="Book Cover" class="book-cover" />
+  </div>
+
+  <!-- Nom de l'auteur -->
+  <div class="author-name">
+    <p>Olivia Wilson</p>
+  </div>
+
+  <!-- Nom du livre -->
+  <div class="book-title">
+    <h2>SOUL</h2>
+  </div>
+
+  <!-- Barre de progression audio -->
+  <ion-progress-bar value="0.5" color="tertiary"></ion-progress-bar>
+
+  <!-- Durée audio -->
+  <div class="audio-time">
+    <p>7:32</p>
+    <p>15:53</p>
+  </div>
+
+  <!-- Contrôles de lecture -->
+  <div class="audio-controls">
+    <ion-button fill="clear">
+      <ion-icon name="play-back-circle-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button fill="solid" color="dark" class="play-button">
+      <ion-icon name="pause"></ion-icon>
+    </ion-button>
+
+    <ion-button fill="clear">
+      <ion-icon name="play-forward-circle-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Panneau du bas avec du texte -->
+  <div class="bottom-panel">
+    <ion-icon name="chevron-up-outline" class="expand-icon"></ion-icon>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua.
+    </p>
+  </div>
 </ion-content>

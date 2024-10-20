@@ -18,6 +18,7 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
 import { IonicModule } from '@ionic/angular/ionic-module';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { pause } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tab1',

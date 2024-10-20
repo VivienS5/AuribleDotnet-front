@@ -1,0 +1,84 @@
+ion-header {
+    --background: #fff;
+}
+
+.book-cover-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.book-cover {
+    border-radius: 15px;
+    width: 200px;
+    /* Taille de l'image du livre */
+    height: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Ombre sous l'image */
+}
+
+.author-name p {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #808080;
+    margin-top: 10px;
+}
+
+.book-title h2 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 10px 0;
+}
+
+ion-progress-bar {
+    margin: 20px 0;
+    height: 8px;
+    --progress-background: #EAEAEA;
+    --progress-background-opacity: 0.5;
+    --background: #D9D9FF;
+}
+
+.audio-time {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 20px;
+}
+
+.audio-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.play-button {
+    margin: 0 20px;
+    width: 60px;
+    height: 60px;
+    --ripple-color: transparent;
+}
+
+.bottom-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F3E8FF;
+    /* Fond lavande */
+    border-radius: 20px 20px 0 0;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.expand-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.bottom-panel p {
+    text-align: center;
+    margin: 0;
+    padding: 0 15px;
+    font-size: 0.9rem;
+    color: #666;
+}
