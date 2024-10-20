@@ -10,6 +10,7 @@
     <div
       *ngFor="let book of books"
       style="text-align: center; padding: 10px; position: relative"
+      (click)="goToPage2()"
     >
       <img class="cardImageTop" src="assets/soul.jpeg" />
       <ion-card style="border-radius: 15px; padding: 10px">
