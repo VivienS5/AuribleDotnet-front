@@ -1,8 +1,14 @@
 import { Routes } from '@angular/router';
+import { Tab1Page } from './tab1/tab1.page';
 
 export const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
+    component: Tab1Page, // Composant autonome de la page d'accueil
+    pathMatch: 'full',
+  },
+  {
+    path: '2', // Pas de / au début de la route
+    loadComponent: () => import('./tab2/tab2.page').then((m) => m.Tab2Page), // Composant autonome pour "Tab2"
   },
 ];

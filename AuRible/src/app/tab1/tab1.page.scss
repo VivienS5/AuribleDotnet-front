@@ -1,0 +1,132 @@
+/* Styles globaux pour la page */
+ion-header {
+    --background: #000000;
+
+    /* Couleur de fond noire */
+    ion-title {
+        font-size: 1.5rem;
+        color: white;
+        /* Couleur blanche pour le titre */
+    }
+}
+
+/* Style du titre "Hello Michel" */
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #000000;
+    /* Noir pour le titre */
+    margin: 20px 0;
+}
+
+/* Barre de recherche */
+ion-searchbar {
+    margin: 10px 0;
+    --background: #f0f0f0;
+    /* Couleur de fond gris clair */
+    --color: #000;
+    /* Texte noir dans la barre de recherche */
+    --placeholder-color: #808080;
+    /* Placeholder gris */
+}
+
+/* Grille des livres */
+div[style*="display: flex"] {
+    justify-content: space-between;
+    /* Espacement égal entre les cartes */
+    padding: 10px 0;
+}
+
+ion-card {
+    position: relative;
+    width: 140px;
+    /* Taille de la carte */
+    height: 270px;
+    /* Hauteur ajustée */
+    background-color: #F3E8FF;
+    /* Fond lavande */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Ombre légère */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* Aligner le contenu en bas */
+    padding-bottom: 10px;
+    /* Petit espace entre le texte et le bas de la carte */
+}
+
+.cardImageTop {
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    /* Légèrement plus grande que la carte */
+    border-radius: 10px;
+    z-index: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+ion-card-content {
+    margin-top: auto;
+    /* Place le texte en bas de la carte */
+    text-align: center;
+    /* Centrer le texte */
+}
+
+ion-card-content h2 {
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 5px 0;
+    color: #000;
+    /* Couleur du texte noir */
+}
+
+ion-card-content p {
+    color: #808080;
+    /* Texte gris pour l'auteur */
+    margin-bottom: 0;
+}
+/* Liste des livres */
+ion-list h2 {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000000;
+}
+
+ion-item {
+    --background: transparent;
+    /* Fond transparent pour les éléments */
+    margin: 5px 0;
+}
+
+ion-thumbnail {
+    border-radius: 10px;
+    /* Bordures arrondies pour les miniatures */
+}
+
+ion-label h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000000;
+    /* Couleur noire pour le titre */
+}
+
+ion-label p {
+    color: #808080;
+    /* Texte gris pour l'auteur */
+}
+
+ion-button {
+    --color: black;
+    /* Couleur noire pour le bouton et l'icône */
+}
+
+ion-button[fill="clear"] {
+    ion-icon {
+        font-size: 1.5rem;
+        /* Taille de l'icône du bouton lecture */
+    }
+}

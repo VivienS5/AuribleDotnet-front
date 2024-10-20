@@ -1,17 +1,43 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Titre principal -->
+  <h1>Hello Michel</h1>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- Barre de recherche -->
+  <ion-searchbar placeholder="Search here"></ion-searchbar>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <!-- Grille des livres -->
+  <div style="display: flex; justify-content: space-around; margin-top: 20px">
+    <div
+      *ngFor="let book of books"
+      style="text-align: center; padding: 10px; position: relative"
+    >
+      <img class="cardImageTop" src="assets/soul.jpeg" />
+      <ion-card style="border-radius: 15px; padding: 10px">
+        <ion-card-content>
+          <h2 style="font-weight: bold">SOUL</h2>
+          <p>Olivia Wilson</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  <!-- Liste des livres -->
+  <h2>All Books</h2>
+  <ion-list>
+    <ion-item *ngFor="let book of books">
+      <ion-thumbnail slot="start" class="thumbnail-container">
+        <img src="assets/soul.jpeg" />
+        <!-- Icône de lecture superposée -->
+        <ion-icon name="play-circle" class="play-icon"></ion-icon>
+      </ion-thumbnail>
+      <ion-label>
+        <h3>SOUL</h3>
+        <p>Olivia Wilson</p>
+      </ion-label>
+      <!-- Icône à trois points -->
+      <ion-button fill="clear" slot="end">
+        <ion-icon name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
 </ion-content>
