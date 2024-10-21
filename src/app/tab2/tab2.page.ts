@@ -14,6 +14,7 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
 import { ActivatedRoute, Router } from '@angular/router';
 import { pause } from 'ionicons/icons';
 import { Book } from '../models/Book';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-tab2',
@@ -44,7 +45,11 @@ export class Tab2Page implements OnInit {
     author: 'waiting',
     chapters: [],
   };
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private msalService: MsalService
+  ) {}
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       if (params['data']) {
@@ -55,5 +60,9 @@ export class Tab2Page implements OnInit {
   }
   goToHome() {
     this.router.navigate(['/2']);
+  }
+  getUser() {
+    const account = this.msalService.instance.getActiveAccount();
+    console.log('User Info:', account);
   }
 }

@@ -21,6 +21,7 @@ import { pause, playCircle, ellipsisVertical } from 'ionicons/icons';
 import { provideHttpClient } from '@angular/common/http'; // Utilisation de provideHttpClient
 import { BookService } from '../service/BookService';
 import { Book } from '../models/Book';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-tab1',
@@ -49,7 +50,7 @@ export class Tab1Page implements OnInit {
   books: Book[] = []; // Stocker les livres récupérés
   bookService = inject(BookService); // Injection directe du service standalone
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private msalService: MsalService) {}
 
   ngOnInit() {
     this.loadBooks(); // Charger les livres au démarrage
@@ -66,6 +67,21 @@ export class Tab1Page implements OnInit {
         console.error('Erreur lors du chargement des livres', error);
       }
     );
+  }
+
+  // Méthode pour se connecter
+  login() {
+    this.msalService.loginRedirect(); // Utilise le redirect pour l'authentification
+  }
+
+  // Méthode pour se déconnecter
+  logout() {
+    this.msalService.logout();
+  }
+
+  // Vérifier si l'utilisateur est connecté
+  isLoggedIn(): boolean {
+    return this.msalService.instance.getActiveAccount() != null;
   }
 
   goToPage2(book: Book) {
