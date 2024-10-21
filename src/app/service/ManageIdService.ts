@@ -20,4 +20,8 @@ export class ManageIdService {
   
     return this.http.get<Book>(url, { headers }); // Use the constructed URL here
   }  
+
+  updateBook(id: number, bookData: Book): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}`, bookData);
+  }
 }

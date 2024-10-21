@@ -1,20 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Modifier le Livre</ion-title>
+    <ion-title>Modifier le Produit</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ng-container *ngIf="book; else loading">
-    <h2>{{ book.title }}</h2>
-    <p><strong>Auteur:</strong> {{ book.author }}</p>
-    <p><strong>Description:</strong> {{ book.resume }}</p>
-        
-    <ion-button>Sauvegarder</ion-button>
-  </ng-container>
-
-  <ng-template #loading>
-    <ion-spinner></ion-spinner>
-    <p>Chargement des informations du livre...</p>
-  </ng-template>
+<ion-content>
+  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+    <label for="title">Titre:</label>
+    <input id="title" formControlName="title" type="text">
+  
+    <label for="resume">Résumé:</label>
+    <textarea id="resume" formControlName="resume"></textarea>
+  
+    <label for="coverURL">URL de la couverture:</label>
+    <input id="coverURL" formControlName="coverURL" type="text">
+  
+    <label for="audioPath">Chemin audio:</label>
+    <input id="audioPath" formControlName="audioPath" type="text">
+  
+    <label for="maxPage">Nombre de pages max:</label>
+    <input id="maxPage" formControlName="maxPage" type="number">
+  
+    <label for="author">Auteur:</label>
+    <input id="author" formControlName="author" type="text">
+  
+    <button type="submit" [disabled]="updateForm.invalid">Mettre à jour le livre</button>
+  </form>
+  <div *ngIf="isUpdated" class="update-message">
+    Livre mis à jour avec succès !
+  </div>
 </ion-content>
