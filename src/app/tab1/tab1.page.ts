@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -15,10 +15,12 @@ import {
   IonCardContent,
 } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-import { IonicModule } from '@ionic/angular/ionic-module';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { pause } from 'ionicons/icons';
+import { pause, playCircle, ellipsisVertical } from 'ionicons/icons';
+import { provideHttpClient } from '@angular/common/http'; // Utilisation de provideHttpClient
+import { BookService } from '../service/BookService';
+import { Book } from '../models/Book';
 
 @Component({
   selector: 'app-tab1',
@@ -43,13 +45,29 @@ import { pause } from 'ionicons/icons';
     IonCardContent,
   ],
 })
-export class Tab1Page {
-  books = [
-    { title: 'SOUL', author: 'Olivia Wilson', cover: 'assets/soul.jpeg' },
-    { title: 'SOUL', author: 'Olivia Wilson', cover: 'assets/soul.jpeg' },
-    { title: 'SOUL', author: 'Olivia Wilson', cover: 'assets/soul.jpeg' },
-  ];
+export class Tab1Page implements OnInit {
+  books: Book[] = []; // Stocker les livres récupérés
+  bookService = inject(BookService); // Injection directe du service standalone
+
   constructor(private router: Router) {}
+
+  ngOnInit() {
+    this.loadBooks(); // Charger les livres au démarrage
+  }
+
+  loadBooks() {
+    this.bookService.getBooks().subscribe(
+      (data: any) => {
+        this.books = data; // Extraire uniquement les livres dans $values
+
+        console.table(this.books); // Afficher les livres extraits dans la console
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des livres', error);
+      }
+    );
+  }
+
   goToPage2() {
     this.router.navigate(['/2']);
   }
