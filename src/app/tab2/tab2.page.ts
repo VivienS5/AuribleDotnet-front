@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -11,8 +11,9 @@ import {
   IonBackButton,
 } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { pause } from 'ionicons/icons';
+import { Book } from '../models/Book';
 
 @Component({
   selector: 'app-tab2',
@@ -32,8 +33,26 @@ import { pause } from 'ionicons/icons';
     IonBackButton,
   ],
 })
-export class Tab2Page {
-  constructor(private router: Router) {}
+export class Tab2Page implements OnInit {
+  receivedBook: Book = {
+    idBook: 0,
+    title: 'waiting',
+    resume: 'waiting',
+    coverURL: 'waiting',
+    audioPath: 'waiting',
+    maxPage: 0,
+    author: 'waiting',
+    chapters: [],
+  };
+  constructor(private route: ActivatedRoute, private router: Router) {}
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      if (params['data']) {
+        this.receivedBook = JSON.parse(params['data']);
+        console.log(this.receivedBook); // Affiche le livre passé
+      }
+    });
+  }
   goToHome() {
     this.router.navigate(['/2']);
   }
