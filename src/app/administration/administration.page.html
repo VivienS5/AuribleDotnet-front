@@ -1,0 +1,22 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <h1>Hello Michel</h1>
+
+  <ion-searchbar placeholder="Search here"></ion-searchbar>
+
+  <h2>All Books</h2>
+  <ion-list>
+    <ion-item *ngFor="let book of books">
+      <ion-thumbnail slot="start" class="thumbnail-container">
+        <img src="assets/soul.jpeg" />
+        <ion-icon name="play-back-circle-outline" class="play-icon"></ion-icon>
+      </ion-thumbnail>
+      <ion-label>
+        <h3>{{book.title}}</h3>
+        <p>{{book.author}}</p>
+      </ion-label>
+      <ion-button fill="clear" slot="end" (click)="navigateToEdit(book)">
+        <ion-icon name="pencil"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
