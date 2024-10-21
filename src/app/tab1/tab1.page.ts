@@ -68,7 +68,9 @@ export class Tab1Page implements OnInit {
     );
   }
 
-  goToPage2() {
-    this.router.navigate(['/2']);
+  goToPage2(book: Book) {
+    this.router.navigate(['/2'], {
+      queryParams: { data: JSON.stringify(book) },
+    });
   }
 }
