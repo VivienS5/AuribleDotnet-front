@@ -16,7 +16,6 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 export class AdminModifPage implements OnInit {
   book: Book | null = null;
   updateForm: FormGroup;
-  isUpdated = false; // Nouvelle variable
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +28,7 @@ export class AdminModifPage implements OnInit {
       title: ['', Validators.required],
       resume: ['', Validators.required],
       coverURL: ['', Validators.required],
-      audioPath: ['', Validators.required],
+      audioPath: [''],
       maxPage: [0, [Validators.required, Validators.min(1)]],
       author: ['', Validators.required],
     });
@@ -61,7 +60,10 @@ export class AdminModifPage implements OnInit {
       this.manageIdService.updateBook(this.book.idBook, updatedBook).subscribe(
         (response: any) => {
           console.log('Livre mis à jour :', response);
-          this.isUpdated = true;
+          this.router.navigate(['/administration'])
+          .then(() => {
+            window.location.reload();
+          });
         },
         (error: any) => {
           console.error('Erreur lors de la mise à jour du livre', error);

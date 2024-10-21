@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Book } from '../models/Book';
+import { book } from 'ionicons/icons';
 
 @Injectable({
   providedIn: 'root', // Standalone service
@@ -23,5 +24,9 @@ export class ManageIdService {
 
   updateBook(id: number, bookData: Book): Observable<any> {
     return this.http.patch(`${this.apiUrl}/${id}`, bookData);
+  }
+
+  deleteBook(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

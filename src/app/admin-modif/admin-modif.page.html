@@ -14,10 +14,7 @@
   
     <label for="coverURL">URL de la couverture:</label>
     <input id="coverURL" formControlName="coverURL" type="text">
-  
-    <label for="audioPath">Chemin audio:</label>
-    <input id="audioPath" formControlName="audioPath" type="text">
-  
+
     <label for="maxPage">Nombre de pages max:</label>
     <input id="maxPage" formControlName="maxPage" type="number">
   
@@ -26,7 +23,4 @@
   
     <button type="submit" [disabled]="updateForm.invalid">Mettre à jour le livre</button>
   </form>
-  <div *ngIf="isUpdated" class="update-message">
-    Livre mis à jour avec succès !
-  </div>
 </ion-content>
