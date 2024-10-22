@@ -13,4 +13,9 @@ export const routes: Routes = [
     loadComponent: () => import('./tab2/tab2.page').then((m) => m.Tab2Page), // Composant autonome pour "Tab2"
     canActivate: [MsalGuard],
   },
+  {
+    path: 'administration', // Pas de / au début de la route
+    loadComponent: () => import('./administration/administration.page').then((m) => m.AdministrationPage), // Composant autonome pour "Tab2"
+  },
+
 ];

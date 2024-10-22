@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Administration des livres</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <h2>Tous les livres</h2>
+  <ion-list>
+    <ion-item *ngFor="let book of books">
+      <ion-thumbnail slot="start" class="thumbnail-container">
+        <img [src]="book.coverURL" />
+      </ion-thumbnail>
+      <ion-label>
+        <h3>{{ book.title }}</h3>
+        <p>{{ book.author }}</p>
+      </ion-label>
+      <ion-button fill="clear" slot="end" (click)="toggleEditForm(book)">
+        <ion-icon name="pencil"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" slot="end" color="danger" (click)="delete(book)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Bouton flottant pour ajouter un livre -->
+  <ion-fab *ngIf="!isFormVisible && !isEditFormVisible"vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="toggleForm()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Formulaire d'ajout de livre -->
+  <div *ngIf="isFormVisible" class="overlay" (click)="toggleForm()"></div>
+  <div *ngIf="isFormVisible" class="form-container">
+    <h2>Ajouter un nouveau livre</h2>
+    <form [formGroup]="addBookForm" (ngSubmit)="onSubmit()" style="width: 100%;">
+      <div>
+        <ion-label position="floating">Titre:</ion-label>
+        <ion-input class="AjoutInput" formControlName="title" type="text" ngDefaultControl></ion-input>
+      </div>
+
+      <div>
+        <ion-label position="floating">Résumé:</ion-label>
+        <ion-textarea class="AjoutInput" formControlName="resume" ngDefaultControl></ion-textarea>
+      </div>
+
+      <div>
+        <ion-label position="floating">Auteur:</ion-label>
+        <ion-input class="AjoutInput" formControlName="author" type="text" ngDefaultControl></ion-input>
+      </div>
+
+      <div>
+        <ion-label position="floating">URL de la couverture:</ion-label>
+        <ion-input class="AjoutInput" formControlName="coverURL" type="text" ngDefaultControl></ion-input>
+      </div>
+
+      <div>
+        <input type="file" (change)="onFileSelected($event)" accept="application/pdf" class="file-input" id="file-upload"/>
+        <label for="file-upload">Choisir un PDF</label>
+      </div>
+      
+      <ion-button shape="round" class="btnValidation" expand="full" type="submit" [disabled]="addBookForm.invalid">
+        Ajouter <ion-icon name="checkmark"></ion-icon>
+      </ion-button>
+      <ion-button shape="round" class="btnAnnulation" expand="full" color="medium" (click)="toggleForm()">Annuler</ion-button>
+    </form>
+  </div>
+
+  <!-- Formulaire de modification de livre -->
+  <div *ngIf="isEditFormVisible" class="overlay" (click)="toggleEditForm(null)"></div>
+  <div *ngIf="isEditFormVisible" class="form-container">
+    <h2>Modifier le livre</h2>
+    <form [formGroup]="editBookForm" (ngSubmit)="onEditSubmit()" style="width: 100%;">
+      <div>
+        <ion-label position="floating">Titre:</ion-label>
+        <ion-input class="AjoutInput" formControlName="title" type="text" ngDefaultControl></ion-input>
+      </div>
+
+      <div>
+        <ion-label position="floating">Résumé:</ion-label>
+        <ion-textarea class="AjoutInput" formControlName="resume" ngDefaultControl></ion-textarea>
+      </div>
+
+      <div>
+        <ion-label position="floating">Auteur:</ion-label>
+        <ion-input class="AjoutInput" formControlName="author" type="text" ngDefaultControl></ion-input>
+      </div>
+
+      <div>
+        <ion-label position="floating">URL de la couverture:</ion-label>
+        <ion-input class="AjoutInput" formControlName="coverURL" type="text" ngDefaultControl></ion-input>
+      </div>
+
+      <ion-button shape="round" class="btnValidation" expand="full" type="submit" [disabled]="editBookForm.invalid">
+        Mettre à jour <ion-icon name="checkmark"></ion-icon>
+      </ion-button>
+      <ion-button shape="round" class="btnAnnulation" expand="full" color="medium" (click)="toggleEditForm(null)">Annuler</ion-button>
+    </form>
+  </div>
+</ion-content>
