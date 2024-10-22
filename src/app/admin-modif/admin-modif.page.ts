@@ -28,7 +28,7 @@ export class AdminModifPage implements OnInit {
       title: ['', Validators.required],
       resume: ['', Validators.required],
       coverURL: ['', Validators.required],
-      audioPath: [''],
+      // audioPath: ['', Validators.required],
       maxPage: [0, [Validators.required, Validators.min(1)]],
       author: ['', Validators.required],
     });
@@ -46,13 +46,22 @@ export class AdminModifPage implements OnInit {
       (data: Book) => {
         console.log('Données du livre', data);
         this.book = data;
-        this.updateForm.patchValue(data); // Remplir le formulaire avec les données du livre
+        
+        this.updateForm.patchValue({
+          title: data.title || '',  // Remplace null par une chaîne vide
+          resume: data.resume || '',
+          coverURL: data.coverURL || '',
+          // audioPath: data.audioPath || '',
+          maxPage: data.maxPage || 0,
+          author: data.author || '',
+        });
       },
       (error: any) => {
         console.error('Erreur lors du chargement du livre', error);
       }
     );
   }
+  
 
   onSubmit() {
     if (this.updateForm.valid && this.book) {
