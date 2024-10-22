@@ -1,31 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Administration des livres</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content [fullscreen]="true" class="ion-padding">
-  <h1>Administration des Livres</h1>
-
-  <h2>Ajouter un nouveau livre</h2>
-  <form [formGroup]="addBookForm" (ngSubmit)="onSubmit()">
-    <label for="title">Titre:</label>
-    <input id="title" formControlName="title" type="text">
-  
-    <label for="resume">Résumé:</label>
-    <textarea id="resume" formControlName="resume"></textarea>
-  
-    <label for="coverURL">URL de la couverture:</label>
-    <input id="coverURL" formControlName="coverURL" type="text">
-
-    <label for="maxPage">Nombre de pages max:</label>
-    <input id="maxPage" formControlName="maxPage" type="number">
-  
-    <label for="author">Auteur:</label>
-    <input id="author" formControlName="author" type="text">
-  
-    <button type="submit" [disabled]="addBookForm.invalid">Ajouter un livre</button>
-  </form>
-  
-  <div *ngIf="successMessage" class="success-message">
-    {{ successMessage }}
-  </div>
-
-  <h2>All Books</h2>
+  <h2>Tous les livres</h2>
   <ion-list>
     <ion-item *ngFor="let book of books">
       <ion-thumbnail slot="start" class="thumbnail-container">
@@ -44,4 +29,52 @@
       </ion-button>
     </ion-item>
   </ion-list>
+
+  <!-- Bouton flottant -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="toggleForm()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Formulaire d'ajout de livre -->
+  <div *ngIf="isFormVisible" class="overlay" (click)="toggleForm()"></div>
+  <div *ngIf="isFormVisible" class="form-container">
+    <h2>Ajouter un nouveau livre</h2>
+    <form [formGroup]="addBookForm" (ngSubmit)="onSubmit()" style="width: 100%;">
+      <div>
+        <ion-label position="floating">Titre:</ion-label>
+        <ion-input class="AjoutInput" formControlName="title" type="text" ngDefaultControl></ion-input>
+      </div>
+
+      <div>
+        <ion-label position="floating">Résumé:</ion-label>
+        <ion-textarea class="AjoutInput" formControlName="resume" ngDefaultControl></ion-textarea>
+      </div>
+
+      <div>
+        <ion-label position="floating">Auteur:</ion-label>
+        <ion-input class="AjoutInput" formControlName="author" type="text" ngDefaultControl></ion-input>
+      </div>
+
+      <div>
+        <ion-label position="floating">URL de la couverture:</ion-label>
+        <ion-input class="AjoutInput" formControlName="coverURL" type="text" ngDefaultControl></ion-input>
+      </div>
+
+      <div>
+        <ion-label position="floating">Déposer un PDF:</ion-label>
+        <input type="file" (change)="onFileSelected($event)" accept="application/pdf" />
+      </div>      
+
+      <ion-button expand="full" type="submit" [disabled]="addBookForm.invalid">
+        Confirm<ion-icon name="checkmark"></ion-icon></ion-button>
+      <ion-button expand="full" color="medium" (click)="toggleForm()">Annuler</ion-button>
+      
+    </form>
+  </div>
+
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
 </ion-content>

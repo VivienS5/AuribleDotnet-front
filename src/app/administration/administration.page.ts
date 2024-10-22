@@ -35,11 +35,12 @@ import { ManageIdService } from '../service/ManageIdService';
   ],
 })
 export class AdministrationPage implements OnInit {
-  books: Book[] = []; // Stocker les livres récupérés
-  bookService = inject(BookService); // Injection directe du service standalone
+  books: Book[] = [];
+  bookService = inject(BookService);
   addBookForm: FormGroup; 
   successMessage: string | null = null;
-
+  isFormVisible: boolean = false;
+  selectedFile: File | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,13 +54,23 @@ export class AdministrationPage implements OnInit {
         resume: ['', Validators.required],
         coverURL: ['', Validators.required],
         audioPath: [''],
-        maxPage: [0, [Validators.required, Validators.min(1)]],
+        maxPage: [0],
         author: ['', Validators.required]
       });
     }
 
   ngOnInit() {
     this.loadBooks(); // Charger les livres au démarrage
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      this.selectedFile = file; // Stocker le fichier sélectionné
+    } else {
+      this.selectedFile = null; // Réinitialiser si ce n'est pas un PDF
+      alert('Veuillez sélectionner un fichier PDF.');
+    }
   }
 
   loadBooks() {
@@ -105,19 +116,51 @@ export class AdministrationPage implements OnInit {
   onSubmit() {
     if (this.addBookForm.valid) {
       const newBook: Book = this.addBookForm.value;
+
+      // Créer une instance de FormData
+      const formData = new FormData();
+      formData.append('book', JSON.stringify(newBook)); // Ajouter les détails du livre
+      if (this.selectedFile) {
+        formData.append('file', this.selectedFile); // Ajouter le fichier PDF
+      }
+
+      // Appeler le service pour envoyer les données
       this.manageIdService.addBook(newBook).subscribe(
         (response: any) => {
           console.log('Livre ajouté avec succès', response);
           this.books.push(response);
           this.addBookForm.reset();
           this.successMessage = "Votre livre à été ajouté avec succès !";
+          this.isFormVisible = false; 
+          
+          // Envoi du PDF à l'autre endpoint
+          this.uploadPDF(formData);
         },
         (error: any) => {
           console.error('Erreur lors de l\'ajout du livre', error);
         }
       );
-    }else {
+    } else {
       console.error('Le formulaire est invalide. Veuillez corriger les erreurs.', this.addBookForm.errors);
     }
+  }
+
+  goBack() {
+    this.router.navigate(['/']); 
+  }
+  toggleForm() {
+    this.isFormVisible = !this.isFormVisible; // Basculer la visibilité du formulaire
+  }
+  
+  uploadPDF(formData: FormData) {
+
+    this.manageIdService.uploadPDF(formData).subscribe(
+      (response: any) => {
+        console.log('PDF envoyé avec succès', response);
+      },
+      (error: any) => {
+        console.error('Erreur lors de l\'envoi du PDF', error);
+      }
+    );
   }
 }

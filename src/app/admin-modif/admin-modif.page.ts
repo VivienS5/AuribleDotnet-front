@@ -62,7 +62,6 @@ export class AdminModifPage implements OnInit {
     );
   }
   
-
   onSubmit() {
     if (this.updateForm.valid && this.book) {
       const updatedBook = { ...this.book, ...this.updateForm.value }; // Fusionner les données
@@ -79,5 +78,8 @@ export class AdminModifPage implements OnInit {
         }
       );
     }
+  }
+  goBack() {
+    this.router.navigate(['/administration']); 
   }
 }
