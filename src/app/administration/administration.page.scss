@@ -27,11 +27,34 @@
 .AjoutInput {
   background-color: white;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgb(0, 0, 0);
+  box-shadow: 0 0 4px rgb(0, 0, 0);
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-ion-button {
+.file-input {
+  display: none;
+}
+
+.file-input + label {
+  display: inline-block;
+  padding: 12px 20px;
+  background-color: #ab64a0;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s;
+}
+
+.file-input + label:hover {
+  background-color: #72546e;
+}
+
+.btnValidation{
+  margin-top: 12px;
+}
+
+.btnAnnulation{
   margin-top: 12px;
 }

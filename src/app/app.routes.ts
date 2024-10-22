@@ -14,9 +14,6 @@ export const routes: Routes = [
   {
     path: 'administration', // Pas de / au début de la route
     loadComponent: () => import('./administration/administration.page').then((m) => m.AdministrationPage), // Composant autonome pour "Tab2"
-  },  {
-    path: 'admin-modif',
-    loadComponent: () => import('./admin-modif/admin-modif.page').then( m => m.AdminModifPage)
   },
 
 ];

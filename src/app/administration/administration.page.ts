@@ -36,33 +36,132 @@ import { ManageIdService } from '../service/ManageIdService';
 })
 export class AdministrationPage implements OnInit {
   books: Book[] = [];
-  bookService = inject(BookService);
-  addBookForm: FormGroup; 
-  successMessage: string | null = null;
+  addBookForm: FormGroup;
+  editBookForm: FormGroup;
   isFormVisible: boolean = false;
+  isEditFormVisible: boolean = false;
+  currentBookToEdit: Book | null = null;
   selectedFile: File | null = null;
+  successMessage: string | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
-    private manageIdService: ManageIdService
+    private bookService: BookService,
+    private manageIdService: ManageIdService,
+    private router: Router
   ) {
-      // Initialisation du formulaire d'ajout
-      this.addBookForm = this.formBuilder.group({
-        id: ['0', Validators.required],
-        title: ['', Validators.required],
-        resume: ['', Validators.required],
-        coverURL: ['', Validators.required],
-        audioPath: [''],
-        maxPage: [0],
-        author: ['', Validators.required]
-      });
-    }
+    // Initialisation du formulaire d'ajout
+    this.addBookForm = this.formBuilder.group({
+      id: ['0', Validators.required],
+      title: ['', Validators.required],
+      resume: ['', Validators.required],
+      coverURL: ['', Validators.required],
+      audioPath: [''],
+      maxPage: [0],
+      author: ['', Validators.required]
+    });    
+
+    // Initialisation du formulaire de modification
+    this.editBookForm = this.formBuilder.group({
+      title: ['', Validators.required],
+      resume: ['', Validators.required],
+      coverURL: ['', Validators.required],
+      audioPath: [''],
+      maxPage: [0],
+      author: ['', Validators.required]
+    });
+  }
 
   ngOnInit() {
     this.loadBooks(); // Charger les livres au démarrage
   }
 
+  // Charger les livres depuis le service
+  loadBooks() {
+    this.bookService.getBooks().subscribe(
+      (data: any) => {
+        this.books = data;
+        this.sortBooks(); // Trier par idBook du plus récent au plus ancien
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des livres', error);
+      }
+    );
+  }
+
+  sortBooks() {
+    this.books.sort((a: Book, b: Book) => b.idBook - a.idBook);
+  }
+
+  // Méthode pour ajouter un livre
+  onSubmit() {
+    if (this.addBookForm.valid) {
+      const newBook: Book = this.addBookForm.value;
+      this.manageIdService.addBook(newBook).subscribe(
+        (response: any) => {
+          console.log('Livre ajouté avec succès', response);
+          this.books.push(response);
+          this.addBookForm.reset();
+          this.successMessage = 'Livre ajouté avec succès !';
+          this.isFormVisible = false;
+          this.loadBooks();
+        },
+        (error: any) => {
+          console.error('Erreur lors de l\'ajout du livre', error);
+        }
+      );
+    }
+  }
+
+  // Méthode pour ouvrir le formulaire d'édition et charger les données du livre
+  toggleEditForm(book: Book | null) {
+    this.isEditFormVisible = !this.isEditFormVisible;
+    if (book) {
+      this.currentBookToEdit = book;
+      this.editBookForm.patchValue({
+        title: book.title,
+        resume: book.resume,
+        coverURL: book.coverURL,
+        author: book.author,
+      });
+    } else {
+      this.currentBookToEdit = null; // Réinitialiser en fermant le formulaire
+    }
+  }
+
+  // Méthode pour soumettre le formulaire de modification
+  onEditSubmit() {
+    if (this.editBookForm.valid && this.currentBookToEdit) {
+      const updatedBook = { ...this.currentBookToEdit, ...this.editBookForm.value };
+
+      this.manageIdService.updateBook(updatedBook.idBook, updatedBook).subscribe(
+        (response) => {
+          console.log('Livre mis à jour avec succès', response);
+          this.isEditFormVisible = false; // Masquer le formulaire après modification
+          this.loadBooks(); // Recharger la liste des livres
+        },
+        (error) => {
+          console.error('Erreur lors de la mise à jour du livre', error);
+        }
+      );
+    }
+  }
+
+  // Méthode pour supprimer un livre
+  delete(book: Book) {
+    if (confirm(`Êtes-vous sûr de vouloir supprimer le livre "${book.title}" ?`)) {
+      this.manageIdService.deleteBook(book.idBook).subscribe(
+        () => {
+          console.log('Livre supprimé avec succès');
+          this.books = this.books.filter(b => b.idBook !== book.idBook);
+        },
+        (error: any) => {
+          console.error('Erreur lors de la suppression du livre', error);
+        }
+      );
+    }
+  }
+  
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file && file.type === 'application/pdf') {
@@ -73,94 +172,10 @@ export class AdministrationPage implements OnInit {
     }
   }
 
-  loadBooks() {
-    this.bookService.getBooks().subscribe(
-      (data: any) => {
-        this.books = data; // Extraire uniquement les livres dans $values
-        this.sortBooks(); // Appeler la méthode de tri
-        console.table(this.books); // Afficher les livres extraits dans la console
-      },
-      (error) => {
-        console.error('Erreur lors du chargement des livres', error);
-      }
-    );
-  }
-
-  sortBooks() { // Trier par idBook du plus récent au plus ancien
-    this.books.sort((a: Book, b: Book) => {
-      return b.idBook - a.idBook;
-    });
-  }
-  
-  navigateToEdit(book: Book) {
-    // Naviguer vers la page de modification avec l'ID du livre
-    this.router.navigate(['/admin-modif', { id: book.idBook }]);
-  }
-
-  delete(book: Book) {
-    if (confirm(`Êtes-vous sûr de vouloir supprimer le livre "${book.title}" ?`)) {
-      this.manageIdService.deleteBook(book.idBook).subscribe(
-        () => {
-          console.log('Livre supprimé avec succès');
-          // Retirer le livre de la liste après suppression
-          this.books = this.books.filter(b => b.idBook !== book.idBook);
-        },
-        (error: any) => {
-          console.error('Erreur lors de la suppression du livre', error);
-        }
-      );
-    }
-  }
-
-  // Méthode pour soumettre le formulaire et ajouter un livre
-  onSubmit() {
-    if (this.addBookForm.valid) {
-      const newBook: Book = this.addBookForm.value;
-
-      // Créer une instance de FormData
-      const formData = new FormData();
-      formData.append('book', JSON.stringify(newBook)); // Ajouter les détails du livre
-      if (this.selectedFile) {
-        formData.append('file', this.selectedFile); // Ajouter le fichier PDF
-      }
-
-      // Appeler le service pour envoyer les données
-      this.manageIdService.addBook(newBook).subscribe(
-        (response: any) => {
-          console.log('Livre ajouté avec succès', response);
-          this.books.push(response);
-          this.addBookForm.reset();
-          this.successMessage = "Votre livre à été ajouté avec succès !";
-          this.isFormVisible = false; 
-          
-          // Envoi du PDF à l'autre endpoint
-          this.uploadPDF(formData);
-        },
-        (error: any) => {
-          console.error('Erreur lors de l\'ajout du livre', error);
-        }
-      );
-    } else {
-      console.error('Le formulaire est invalide. Veuillez corriger les erreurs.', this.addBookForm.errors);
-    }
-  }
-
   goBack() {
     this.router.navigate(['/']); 
   }
   toggleForm() {
-    this.isFormVisible = !this.isFormVisible; // Basculer la visibilité du formulaire
-  }
-  
-  uploadPDF(formData: FormData) {
-
-    this.manageIdService.uploadPDF(formData).subscribe(
-      (response: any) => {
-        console.log('PDF envoyé avec succès', response);
-      },
-      (error: any) => {
-        console.error('Erreur lors de l\'envoi du PDF', error);
-      }
-    );
+    this.isFormVisible = !this.isFormVisible;
   }
 }
