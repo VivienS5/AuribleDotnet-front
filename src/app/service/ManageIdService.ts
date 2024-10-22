@@ -29,4 +29,8 @@ export class ManageIdService {
   deleteBook(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  addBook(book: Book): Observable<Book> {
+    return this.http.post<Book>(this.apiUrl, book);
+  }
 }
