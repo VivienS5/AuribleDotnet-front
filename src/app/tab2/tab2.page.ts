@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -45,6 +45,12 @@ export class Tab2Page implements OnInit {
     author: 'waiting',
     chapters: [],
   };
+  @ViewChild('audioPlayer') audioPlayerRef!: ElementRef<HTMLAudioElement>;
+  audioSrc = 'assets/audio/VillagoisMinecraftTaPeur.mp3';
+  isPlaying = false;
+  currentTime = '0:00';
+  duration = '0:00';
+  progress = 0;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -57,6 +63,42 @@ export class Tab2Page implements OnInit {
         console.log(this.receivedBook); // Affiche le livre passé
       }
     });
+  }
+  togglePlayPause() {
+    const audio = this.audioPlayerRef.nativeElement;
+    if (this.isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    this.isPlaying = !this.isPlaying;
+  }
+
+  forward() {
+    const audio = this.audioPlayerRef.nativeElement;
+    audio.currentTime = Math.min(audio.currentTime + 10, audio.duration);
+  }
+
+  rewind() {
+    const audio = this.audioPlayerRef.nativeElement;
+    audio.currentTime = Math.max(audio.currentTime - 10, 0);
+  }
+
+  onMetadataLoaded() {
+    const audio = this.audioPlayerRef.nativeElement;
+    this.duration = this.formatTime(audio.duration);
+  }
+
+  onTimeUpdate() {
+    const audio = this.audioPlayerRef.nativeElement;
+    this.currentTime = this.formatTime(audio.currentTime);
+    this.progress = audio.currentTime / audio.duration;
+  }
+
+  formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
   }
   goToHome() {
     this.router.navigate(['/2']);
