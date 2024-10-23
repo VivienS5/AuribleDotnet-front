@@ -5,13 +5,13 @@ import { MsalGuard } from '@azure/msal-angular';
 export const routes: Routes = [
   {
     path: '',
-    component: Tab1Page, // Composant autonome de la page d'accueil
+    component: Tab1Page,
     pathMatch: 'full',
     canActivate: [MsalGuard],
   },
   {
-    path: '2', // Pas de / au début de la route
-    loadComponent: () => import('./tab2/tab2.page').then((m) => m.Tab2Page), // Composant autonome pour "Tab2"
+    path: '2',
+    loadComponent: () => import('./tab2/tab2.page').then((m) => m.Tab2Page),
     canActivate: [MsalGuard],
   },
   {
