@@ -45,7 +45,7 @@ export function MSALInstanceFactory() {
   });
 
   // Await the MSAL instance initialization before making any API calls
-  return msalInstance;
+  return   msalInstance;
 }
 
 // MSAL Guard Configuration
@@ -61,7 +61,7 @@ export function MsalInterceptorConfigFactory(): MsalInterceptorConfiguration {
   return {
     interactionType: InteractionType.Redirect,
     protectedResourceMap: new Map([
-      ['http://localhost:4200', ['api://b9385f89-d371-4a84-8126-4ae9fb977898/profil']],
+      ['http://localhost:5176', ['api://b9385f89-d371-4a84-8126-4ae9fb977898/profil']],
     ])
   };
 }

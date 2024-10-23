@@ -8,7 +8,7 @@ import { book } from 'ionicons/icons';
   providedIn: 'root', // Standalone service
 })
 export class ManageIdService {
-  private apiUrl = 'http://localhost:5176/manage'; // URL de base de l'API
+  private apiUrl = 'http://localhost:5176/Manage'; // URL de base de l'API
 
   constructor(private http: HttpClient) {}
 

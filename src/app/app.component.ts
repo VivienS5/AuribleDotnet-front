@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MsalService } from '@azure/msal-angular';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MSAL_GUARD_CONFIG, MsalGuardConfiguration, MsalService } from '@azure/msal-angular';
 import { loginRequest } from '../environments/auth-config';
 import { IonicModule } from '@ionic/angular';
+import { AuthService } from './service/AuthService';
+import { RedirectRequest } from '@azure/msal-browser';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +12,14 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule],
 })
 export class AppComponent implements OnInit {
-  constructor(private msalService: MsalService) {}
+  constructor(private msalService: MsalService,private authService: AuthService) {}
 
   ngOnInit() {
     this.checkAccount();
+    this.msalService.handleRedirectObservable().subscribe(() => {
+      console.log("Redirected");
+      this.authService.login();
+    })
   }
 
   checkAccount() {

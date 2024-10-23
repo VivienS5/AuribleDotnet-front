@@ -1,7 +1,9 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <!-- Titre principal -->
-  <h1>Hello Michel</h1>
-
+  <h1>Aurible</h1>
+  <ion-button  (click)="goToAdminPage()">
+    Administration
+  </ion-button>
   <!-- Barre de recherche -->
   <ion-searchbar placeholder="Search here"></ion-searchbar>
 
@@ -12,8 +14,8 @@
       style="text-align: center; padding: 10px; position: relative"
       (click)="goToPage2(book)"
     >
-      <img class="cardImageTop" src="assets/soul.jpeg" />
-      <ion-card style="border-radius: 15px; padding: 10px">
+      <img class="cardImageTop" src="{{book.coverURL}}" />
+      <ion-card style="border-radius: 15px; padding: 10px;margin-top: 30px;">
         <ion-card-content>
           <h2 style="font-weight: bold">{{book.title}}</h2>
           <p>{{book.author}}</p>
@@ -27,7 +29,7 @@
   <ion-list>
     <ion-item *ngFor="let book of books">
       <ion-thumbnail slot="start" class="thumbnail-container">
-        <img src="assets/soul.jpeg" />
+        <img src="{{book.coverURL}}" />
         <!-- Icône de lecture superposée -->
         <ion-icon name="play-back-circle-outline" class="play-icon"></ion-icon>
       </ion-thumbnail>
@@ -35,6 +37,10 @@
         <h3>{{book.title}}</h3>
         <p>{{book.author}}</p>
       </ion-label>
+      <h6 *ngIf="book.audioPath === ''; else availableText">Prochainement</h6>
+      <ng-template #availableText>
+        <h6>Disponible</h6>
+      </ng-template>
       <!-- Icône à trois points -->
       <ion-button fill="clear" slot="end">
         <ion-icon name="ellipsis-vertical"></ion-icon>

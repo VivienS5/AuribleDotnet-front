@@ -22,6 +22,7 @@ import { provideHttpClient } from '@angular/common/http'; // Utilisation de prov
 import { BookService } from '../service/BookService';
 import { Book } from '../models/Book';
 import { MsalService } from '@azure/msal-angular';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -49,10 +50,13 @@ import { MsalService } from '@azure/msal-angular';
 export class Tab1Page implements OnInit {
   books: Book[] = []; // Stocker les livres récupérés
   bookService = inject(BookService); // Injection directe du service standalone
+  isAdmin: boolean = false;
+  isAuthenticated: boolean = false;
 
-  constructor(private router: Router, private msalService: MsalService) {}
+  constructor(private router: Router, private msalService: MsalService, private navCtrl: NavController) {}
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.checkUserRole(); // Vérifier le rôle utilisateur
     this.loadBooks(); // Charger les livres au démarrage
   }
 
@@ -60,7 +64,6 @@ export class Tab1Page implements OnInit {
     this.bookService.getBooks().subscribe(
       (data: any) => {
         this.books = data; // Extraire uniquement les livres dans $values
-
         console.table(this.books); // Afficher les livres extraits dans la console
       },
       (error) => {
@@ -69,9 +72,38 @@ export class Tab1Page implements OnInit {
     );
   }
 
+  checkUserRole() {
+    const account = this.msalService.instance.getActiveAccount();
+    if (account) {
+      this.isAuthenticated = true;
+      const roles = account.idTokenClaims?.roles || [];
+      console.log(roles);
+      this.isAdmin = roles.includes('admin');
+    }
+  }
+  // Méthode pour se connecter
+  login() {
+    this.msalService.loginRedirect(); // Utilise le redirect pour l'authentification
+  }
+
+  // Méthode pour se déconnecter
+  logout() {
+    this.msalService.logout();
+  }
+
+  // Vérifier si l'utilisateur est connecté
+  isLoggedIn(): boolean {
+    return this.msalService.instance.getActiveAccount() != null;
+  }
+
   goToPage2(book: Book) {
     this.router.navigate(['/2'], {
       queryParams: { data: JSON.stringify(book) },
     });
+  }
+
+  goToAdminPage() {
+
+    this.navCtrl.navigateForward('/administration');
   }
 }
