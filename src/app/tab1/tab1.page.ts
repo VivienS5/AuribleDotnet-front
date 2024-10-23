@@ -51,12 +51,11 @@ export class Tab1Page implements OnInit {
   books: Book[] = []; // Stocker les livres récupérés
   bookService = inject(BookService); // Injection directe du service standalone
   isAdmin: boolean = false;
-  isAuthenticated: boolean = false; 
+  isAuthenticated: boolean = false;
 
   constructor(private router: Router, private msalService: MsalService, private navCtrl: NavController) {}
 
-  async ngOnInit() {
-
+  ngOnInit() {
     this.checkUserRole(); // Vérifier le rôle utilisateur
     this.loadBooks(); // Charger les livres au démarrage
   }
@@ -104,7 +103,7 @@ export class Tab1Page implements OnInit {
   }
 
   goToAdminPage() {
-    
+
     this.navCtrl.navigateForward('/administration');
   }
 }
