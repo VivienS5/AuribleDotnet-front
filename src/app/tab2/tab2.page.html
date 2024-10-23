@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-button (click)="goToHome()">
+        <ion-icon>arrow-back-outline</ion-icon></ion-button
+      >
       <!-- Bouton retour -->
     </ion-buttons>
     <ion-title>Page Lecture</ion-title>
@@ -16,34 +18,47 @@
 
   <!-- Nom de l'auteur -->
   <div class="author-name">
-    <p>{{receivedBook.author}}</p>
+    <p>Olivia Wilson</p>
   </div>
 
   <!-- Nom du livre -->
   <div class="book-title">
-    <h2>{{receivedBook.title}}</h2>
+    <h2>SOUL</h2>
   </div>
 
+  <!-- Audio Player -->
+  <audio
+    #audioPlayer
+    [src]="audioSrc"
+    (loadedmetadata)="onMetadataLoaded()"
+    (timeupdate)="onTimeUpdate()"
+  ></audio>
+
   <!-- Barre de progression audio -->
-  <ion-progress-bar value="0.5" color="tertiary"></ion-progress-bar>
+  <ion-progress-bar [value]="progress" color="tertiary"></ion-progress-bar>
 
   <!-- Durée audio -->
   <div class="audio-time">
-    <p>7:32</p>
-    <p>15:53</p>
+    <p>{{ currentTime }}</p>
+    <p>{{ duration }}</p>
   </div>
 
   <!-- Contrôles de lecture -->
   <div class="audio-controls">
-    <ion-button fill="clear">
+    <ion-button fill="clear" (click)="rewind()">
       <ion-icon name="play-back-circle-outline"></ion-icon>
     </ion-button>
 
-    <ion-button fill="solid" color="dark" class="play-button">
-      <ion-icon name="pause"></ion-icon>
+    <ion-button
+      fill="solid"
+      color="dark"
+      class="play-button"
+      (click)="togglePlayPause()"
+    >
+      <ion-icon [name]="isPlaying ? 'pause' : 'play'"></ion-icon>
     </ion-button>
 
-    <ion-button fill="clear">
+    <ion-button fill="clear" (click)="forward()">
       <ion-icon name="play-forward-circle-outline"></ion-icon>
     </ion-button>
   </div>
@@ -51,6 +66,9 @@
   <!-- Panneau du bas avec du texte -->
   <div class="bottom-panel">
     <ion-icon name="chevron-up-outline" class="expand-icon"></ion-icon>
-    <p>{{receivedBook.resume}}</p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua.
+    </p>
   </div>
 </ion-content>

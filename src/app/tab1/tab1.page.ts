@@ -52,7 +52,7 @@ export class Tab1Page implements OnInit {
 
   constructor(private router: Router, private msalService: MsalService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.loadBooks(); // Charger les livres au démarrage
   }
 
@@ -67,21 +67,6 @@ export class Tab1Page implements OnInit {
         console.error('Erreur lors du chargement des livres', error);
       }
     );
-  }
-
-  // Méthode pour se connecter
-  login() {
-    this.msalService.loginRedirect(); // Utilise le redirect pour l'authentification
-  }
-
-  // Méthode pour se déconnecter
-  logout() {
-    this.msalService.logout();
-  }
-
-  // Vérifier si l'utilisateur est connecté
-  isLoggedIn(): boolean {
-    return this.msalService.instance.getActiveAccount() != null;
   }
 
   goToPage2(book: Book) {

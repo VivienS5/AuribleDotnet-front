@@ -7,6 +7,7 @@ export const routes: Routes = [
     path: '',
     component: Tab1Page, // Composant autonome de la page d'accueil
     pathMatch: 'full',
+    canActivate: [MsalGuard],
   },
   {
     path: '2', // Pas de / au début de la route
@@ -15,7 +16,9 @@ export const routes: Routes = [
   },
   {
     path: 'administration', // Pas de / au début de la route
-    loadComponent: () => import('./administration/administration.page').then((m) => m.AdministrationPage), // Composant autonome pour "Tab2"
+    loadComponent: () =>
+      import('./administration/administration.page').then(
+        (m) => m.AdministrationPage
+      ), // Composant autonome pour "Tab2"
   },
-
 ];
