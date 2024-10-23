@@ -1,27 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { loginRequest } from '../environments/auth-config';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html',
   standalone: true,
-  imports: [IonApp, IonRouterOutlet],
+  templateUrl: 'app.component.html',
+  imports: [IonicModule],
 })
 export class AppComponent implements OnInit {
   constructor(private msalService: MsalService) {}
+
   ngOnInit() {
-    // Utilise `handleRedirectObservable` pour gérer la redirection après l'authentification
-    this.msalService.handleRedirectObservable().subscribe({
-      next: (result) => {
-        if (result) {
-          console.log('Login successful!', result);
-          // Tu peux gérer les informations de l'utilisateur ici
-        }
-      },
-      error: (error) => {
-        console.error('Login failed', error);
-      },
+    this.checkAccount();
+  }
+
+  checkAccount() {
+    const account = this.msalService.instance.getActiveAccount();
+    if (!account) {
+      this.msalService.instance.loginRedirect(loginRequest);
+    }
+  }
+
+  login() {
+    this.msalService.instance.loginPopup(loginRequest).then((response) => {
+      this.msalService.instance.setActiveAccount(response.account);
     });
+  }
+
+  logout() {
+    this.msalService.instance.logout();
   }
 }

@@ -101,7 +101,7 @@ export class Tab2Page implements OnInit {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
   }
   goToHome() {
-    this.router.navigate(['/2']);
+    this.router.navigate(['/']);
   }
   getUser() {
     const account = this.msalService.instance.getActiveAccount();
