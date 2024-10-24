@@ -97,21 +97,51 @@ export class AdministrationPage implements OnInit {
   onSubmit() {
     if (this.addBookForm.valid) {
       const newBook: Book = this.addBookForm.value;
+  
+      // Étape 1: Envoyer la requête pour ajouter le livre
       this.manageIdService.addBook(newBook).subscribe(
         (response: any) => {
           console.log('Livre ajouté avec succès', response);
+  
+          // Étape 2: Vérifier si un fichier PDF a été sélectionné
+          if (this.selectedFile) {
+            const formData = new FormData();
+            formData.append('file', this.selectedFile);
+  
+            // Étape 3: Si le livre est bien ajouté, on envoie le PDF
+            this.manageIdService.uploadPDF(formData, response.idBook).subscribe(
+              (uploadResponse) => {
+                console.log('PDF uploadé avec succès', uploadResponse);
+  
+                // Optionnel: Afficher un message de succès ou effectuer d'autres actions après upload
+                this.successMessage = 'Livre et PDF ajoutés avec succès !';
+              },
+              (uploadError) => {
+                console.error('Erreur lors de l\'upload du PDF', uploadError);
+                // Optionnel: Gérer l'erreur de l'upload (afficher un message d'erreur, etc.)
+                this.successMessage = 'Livre ajouté, mais erreur lors de l\'upload du PDF.';
+              }
+            );
+          } else {
+            // Si aucun fichier PDF n'a été sélectionné, on affiche juste le message de succès pour le livre
+            this.successMessage = 'Livre ajouté avec succès sans PDF.';
+          }
+  
+          // Réinitialiser le formulaire et recharger la liste des livres
           this.books.push(response);
           this.addBookForm.reset();
-          this.successMessage = 'Livre ajouté avec succès !';
           this.isFormVisible = false;
           this.loadBooks();
         },
         (error: any) => {
           console.error('Erreur lors de l\'ajout du livre', error);
+          // Optionnel: Gérer l'erreur d'ajout du livre (afficher un message d'erreur, etc.)
+          this.successMessage = 'Erreur lors de l\'ajout du livre.';
         }
       );
     }
   }
+  
 
   // Méthode pour ouvrir le formulaire d'édition et charger les données du livre
   toggleEditForm(book: Book | null) {

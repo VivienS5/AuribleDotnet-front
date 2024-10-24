@@ -34,7 +34,7 @@ export class ManageIdService {
     return this.http.post<Book>(this.apiUrl, book);
   }
 
-  uploadPDF(formData: FormData) {
-    return this.http.post(`${this.apiUrl}/upload-pdf`, formData);
+  uploadPDF(formData: FormData, id: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/upload/${id}`, formData);
   }
 }
