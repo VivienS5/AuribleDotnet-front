@@ -53,8 +53,9 @@ export class Tab2Page implements OnInit {
     chapters: [],
   };
 
+
   @ViewChild('audioPlayer') audioPlayerRef!: ElementRef<HTMLAudioElement>;
-  audioSrc = ''; // Pas de fichier local
+  audioSrc = ''; // Pas de fichier local 
   isPlaying = false;
   currentTime = '0:00';
   duration = '0:00';
@@ -77,17 +78,20 @@ export class Tab2Page implements OnInit {
   }
 
   loadAudio() {
-    // Appel de l'API pour récupérer l'audio du livre
+    // Appel de l'API pour récupérer l'audio du livre en fonction de son ID
     this.audioService.getAudioByBookId(this.receivedBook.idBook).subscribe(
       (audioBlob) => {
+        // Créer une URL à partir du Blob reçu (fichier audio)
         const audioURL = URL.createObjectURL(audioBlob);
         this.audioSrc = audioURL; // Assigner l'URL à la source audio
+        console.log('Audio chargé avec succès', this.audioSrc);
       },
       (error) => {
-        console.error("Erreur lors du chargement de l'audio", error);
+        console.error('Erreur lors du chargement de l\'audio', error);
       }
     );
   }
+  
 
   togglePlayPause() {
     const audio = this.audioPlayerRef.nativeElement;
