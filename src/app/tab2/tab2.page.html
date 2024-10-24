@@ -18,12 +18,12 @@
 
   <!-- Nom de l'auteur -->
   <div class="author-name">
-    <p>Olivia Wilson</p>
+    <p>{{receivedBook.author}}</p>
   </div>
 
   <!-- Nom du livre -->
   <div class="book-title">
-    <h2>SOUL</h2>
+    <h2>{{receivedBook.title}}</h2>
   </div>
 
   <!-- Audio Player -->
@@ -67,8 +67,7 @@
   <div class="bottom-panel">
     <ion-icon name="chevron-up-outline" class="expand-icon"></ion-icon>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua.
+{{receivedBook.resume}}
     </p>
   </div>
 </ion-content>
